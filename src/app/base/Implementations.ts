@@ -25,19 +25,17 @@ enum levels {
 }
 
 export interface IActor {
+    id: string
     name: string
     email: string
     phone: string
     level: levels
-}
-
-export interface ISuperActor extends IActor {
     Super: boolean
+    auth: boolean
 }
 
 
 export interface IActorsManagement {
-    CreateSuperActor(SuperActor: ISuperActor): Promise<boolean>
     CreateActor(Actor: IActor): Promise<boolean>
     DeleteActor(id: boolean, verifySuperActor: boolean): Promise<boolean>
 }
@@ -47,7 +45,7 @@ export interface IActorsManagement {
 export interface IValidator {
     VerifyFields_Joi(Schema: any, data: object): Promise<boolean>
     VerifyActorTrue(Actor: IActor): Promise<boolean>
-    VerifyActorSuper(SuperActor: ISuperActor): Promise<boolean>
+    VerifyActorSuper(Actor: IActor): Promise<boolean>
     verifyPlanTrue(Plan: IPlan): Promise<boolean>
 }
 

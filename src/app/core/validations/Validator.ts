@@ -1,15 +1,20 @@
 import { IActor, IPlan, IValidator } from "../../base/Implementations";
-import Joi from 'joi'
-import { VerifyJoi } from "../../../config/Joi";
 import { OperationsDb } from "../../databases/OperationsDb";
+import Joi from "joi";
 const operations = new OperationsDb()
 
 
 export class validator implements IValidator {
 
-    public async VerifyFields_Joi(Schema: any, data: object) {
-        await VerifyJoi.validate(Schema, data)
-        return true
+    public async VerifyFields_Joi(Schema: Joi.AnySchema, data: object) {
+        try {
+            await Schema.validateAsync(data)
+            console.log('validação passou!', data)
+            return true
+        } catch (error:any) {
+            console.log({error: error.message});
+            return false
+        }
     }
 
     public async VerifyActorTrue(Actor: IActor) {
@@ -20,8 +25,14 @@ export class validator implements IValidator {
         return true;
     }
 
-    public async VerifyActorSuper() {
-        return true;
+    public async VerifyActorSuper(Actor: IActor) {
+        const currentActor = await operations.FindActorById(Actor.id)
+        if (!currentActor) {
+            console.log('nenhum autor encontrado');
+            return false
+        } else {
+           return  currentActor.super === true ? true : false;
+        }
     }
 
     public async verifyPlanTrue(plan: IPlan) {

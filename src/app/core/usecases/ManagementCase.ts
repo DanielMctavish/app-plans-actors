@@ -1,6 +1,7 @@
 import IManagement from "../../base/Implementations";
 import { IAuth, IPlan } from "../../base/Implementations";
 import { OperationsDb } from "../../databases/OperationsDb";
+import { validator } from "../validations/Validator";
 const operations = new OperationsDb()
 
 export class Management implements IManagement {
@@ -21,6 +22,10 @@ export class Management implements IManagement {
     }
 
     public async UpdatePlan(auth: IAuth, Plan: IPlan) {
+        if (auth.Auth === false) {
+            console.log('autorização inválida para operação')
+            return false;
+        }
         return true
     }
 

@@ -9,42 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Management = void 0;
+exports.Actors = void 0;
 const OperationsDb_1 = require("../../databases/OperationsDb");
+const Validator_1 = require("../validations/Validator");
+const Joi_1 = require("../../../config/Joi");
 const operations = new OperationsDb_1.OperationsDb();
-class Management {
-    CreatePlan(auth, Plan) {
+const validate = new Validator_1.validator();
+class Actors {
+    CreateActor(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (auth.Auth === false) {
-                console.log('autorização inválida para operação');
+            validate.VerifyFields_Joi(Joi_1.SchemmaActors, data);
+            return false;
+            try {
+                yield operations.CreateNewActor(data);
+                return true;
+            }
+            catch (error) {
+                console.log("houve um erro ", error);
                 return false;
             }
-            operations.createNewPlan(Plan);
-            return true;
         });
     }
-    ReadPlan(auth, Plan) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (auth.Auth === false) {
-                console.log('autorização inválida para operação');
-                return false;
-            }
-            return true;
-        });
-    }
-    UpdatePlan(auth, Plan) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (auth.Auth === false) {
-                console.log('autorização inválida para operação');
-                return false;
-            }
-            return true;
-        });
-    }
-    DeletePlan() {
+    DeleteActor() {
         return __awaiter(this, void 0, void 0, function* () {
             return true;
         });
     }
 }
-exports.Management = Management;
+exports.Actors = Actors;

@@ -17,6 +17,7 @@ model Actors {
   phone  String
   levels String
   super  Boolean?
+  auth   Boolean
   Plans  Plans[]
 }
 

@@ -11,23 +11,24 @@ export class OperationsDb {
             }
         })
     }
-    //create new actor
-    public async createNewActor(Actor: IActor) {
+    public async CreateNewActor(Actor: IActor) {
         await ActorsDb.create({
             data: {
                 name: Actor.name,
                 email: Actor.email,
                 phone: Actor.phone,
-                levels: Actor.level
+                levels: Actor.level,
+                auth: false
             }
         })
     }
     public async FindActorById(id_actor: string) {
-        await ActorsDb.findUnique({
+        const actor = await ActorsDb.findUnique({
             where: {
                 id: id_actor
             }
         })
+        return actor;
     }
     public async FindPlanById(id_plans: string) {
         await ActorsDb.findUnique({

@@ -10,15 +10,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Actors = void 0;
+const OperationsDb_1 = require("../../databases/OperationsDb");
+const Validator_1 = require("../validations/Validator");
+const Joi_1 = require("../../../config/Joi");
+const operations = new OperationsDb_1.OperationsDb();
+const validate = new Validator_1.validator();
 class Actors {
-    CreateSuperActor() {
+    CreateActor(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return true;
-        });
-    }
-    CreateActor() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return true;
+            try {
+                validate.VerifyFields_Joi(Joi_1.SchemmaActors, data);
+                console.log('validação do joi passou!', data);
+            }
+            catch (error) {
+                console.log('reposta do JOI !!!!!!', error);
+            }
+            return false;
+            try {
+                yield operations.CreateNewActor(data);
+                return true;
+            }
+            catch (error) {
+                console.log("houve um erro ", error);
+                return false;
+            }
         });
     }
     DeleteActor() {
