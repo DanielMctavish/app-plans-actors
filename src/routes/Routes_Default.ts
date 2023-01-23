@@ -8,10 +8,9 @@ routes.get('/', (req, res) => {
     return res.status(200).json({ message:'Success!'})
 })
 
-routes.post('/createactor',(req,res)=>{
-    actorsUsescases.CreateActor(req.body).then(response=>{
-        //console.log("!!!!!!resposta na rota!!!!!!", response);
-        return res.status(200).json({ message:'Autor criado com sucesso!'}) 
+routes.post('/createactor',async (req,res)=>{
+    await actorsUsescases.CreateActor(req.body).then(response=>{
+        return res.status(response.status).json(response.message) 
     })
 })
 

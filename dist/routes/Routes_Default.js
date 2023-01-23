@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const ActorsCase_1 = require("../app/core/usecases/ActorsCase");
@@ -7,10 +16,9 @@ const actorsUsescases = new ActorsCase_1.Actors();
 routes.get('/', (req, res) => {
     return res.status(200).json({ message: 'Success!' });
 });
-routes.post('/createactor', (req, res) => {
-    actorsUsescases.CreateActor(req.body).then(response => {
-        //console.log("!!!!!!resposta na rota!!!!!!", response);
-        return res.status(200).json({ message: 'Autor criado com sucesso!' });
+routes.post('/createactor', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield actorsUsescases.CreateActor(req.body).then(response => {
+        return res.status(response.status).json(response.message);
     });
-});
+}));
 exports.default = routes;

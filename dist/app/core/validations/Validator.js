@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validator = void 0;
+exports.validator = exports.responseJoi = void 0;
 const OperationsDb_1 = require("../../databases/OperationsDb");
 const operations = new OperationsDb_1.OperationsDb();
 class validator {
@@ -17,12 +17,18 @@ class validator {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield Schema.validateAsync(data);
-                console.log('validação passou!', data);
-                return true;
+                exports.responseJoi = {
+                    success: true,
+                    message: 'validação passou!',
+                    status: 200
+                };
             }
             catch (error) {
-                console.log({ error: error.message });
-                return false;
+                exports.responseJoi = {
+                    success: false,
+                    message: error.message,
+                    status: 400
+                };
             }
         });
     }

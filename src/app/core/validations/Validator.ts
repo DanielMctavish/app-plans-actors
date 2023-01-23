@@ -4,16 +4,29 @@ import Joi from "joi";
 const operations = new OperationsDb()
 
 
+interface isValid {
+    success: boolean
+    message: string
+    status: number
+}
+
+export let responseJoi:isValid;
 export class validator implements IValidator {
 
-    public async VerifyFields_Joi(Schema: Joi.AnySchema, data: object) {
+    public async VerifyFields_Joi(Schema: Joi.AnySchema, data: object):Promise<any> {
         try {
             await Schema.validateAsync(data)
-            console.log('validação passou!', data)
-            return true
-        } catch (error:any) {
-            console.log({error: error.message});
-            return false
+            responseJoi = {
+                success: true,
+                message: 'validação passou!',
+                status: 200
+            }
+        } catch (error: any) {
+            responseJoi = {
+                success: false,
+                message: error.message,
+                status: 400
+            }
         }
     }
 
@@ -31,7 +44,7 @@ export class validator implements IValidator {
             console.log('nenhum autor encontrado');
             return false
         } else {
-           return  currentActor.super === true ? true : false;
+            return currentActor.super === true ? true : false;
         }
     }
 
